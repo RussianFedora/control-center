@@ -1,0 +1,44 @@
+diff -rupN gnome-control-center-3.8.3.orig/panels/keyboard/cc-keyboard-option.c gnome-control-center-3.8.3/panels/keyboard/cc-keyboard-option.c
+--- gnome-control-center-3.8.3.orig/panels/keyboard/cc-keyboard-option.c	2013-06-05 13:27:56.000000000 +0400
++++ gnome-control-center-3.8.3/panels/keyboard/cc-keyboard-option.c	2013-06-28 16:48:25.490116261 +0400
+@@ -42,6 +42,8 @@
+ #define XKB_OPTION_GROUP_COMP "Compose key"
+ #define XKB_OPTION_GROUP_GRP  "grp"
+ 
++#define XKB_TYPO_LAYOUT_VALUE "misc:typo"
++
+ enum
+ {
+   PROP_0,
+@@ -453,15 +455,29 @@ cc_keyboard_option_set_selection (CcKeyb
+ 
+   if (!new_value)
+     {
+-      if (self->current_value)
+-        remove_value (self->current_value);
++        if (self->current_value)
++        {
++            remove_value (self->current_value);
++
++            if (g_str_has_prefix(self->current_value, "lv3:"))
++            {
++                remove_value (XKB_TYPO_LAYOUT_VALUE);
++            }
++        }
+     }
+   else
+     {
+       if (self->current_value)
+         replace_value (self->current_value, new_value);
+       else
++      {
+         add_value (new_value);
++
++        if (g_str_has_prefix(new_value, "lv3:"))
++        {
++            add_value (XKB_TYPO_LAYOUT_VALUE);
++        }
++      }
+     }
+ 
+   g_settings_set_strv (input_sources_settings, XKB_OPTIONS_KEY,
