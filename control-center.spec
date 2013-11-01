@@ -141,6 +141,7 @@ utilities.
 %setup -q -n gnome-control-center-%{version}
 %patch0 -p1 -b .distro-logo
 %patch1 -p1 -b .fix-compile
+%patch2 -p1 -b .lv3
 
 %build
 autoreconf
